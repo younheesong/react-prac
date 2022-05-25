@@ -6,7 +6,7 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const config = require("./config/key");
 
-//application.x-www0form-! 분석가능하게 해줌
+//application.x-www0form-! 분석가능하게 해 줌
 app.use(bodyParser.urlencoded({ extended: true }));
 //json 파일 분석 하게 해줌
 app.use(bodyParser.json());
