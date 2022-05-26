@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const config = require("./config/key");
 const cookieParser = require("cookie-parser");
+const { auth } = require("./middleware/auth");
 //application.x-www0form-! 분석가능하게 해 줌
 app.use(bodyParser.urlencoded({ extended: true }));
 //json 파일 분석 하게 해줌
@@ -20,7 +21,7 @@ mongoose
 app.get("/", (req, res) => {
   res.send("Hello World!!");
 });
-app.post("/register", (req, res) => {
+app.post("/api/user/register", (req, res) => {
   // register 시, 필요한 정보를 client 받으면 db에 저장
   const user = new User(req.body);
   user.save((err, userInfo) => {
@@ -31,7 +32,7 @@ app.post("/register", (req, res) => {
     });
   });
 });
-app.post("/login", (req, res) => {
+app.post("/api/user/login", (req, res) => {
   // 요청된 이메일을 db에서 있는지 체크
   // 이메일이 있으면, 비밀번호 동일 체크
   //비밀번호 동일시 token 생성
@@ -63,6 +64,20 @@ app.post("/login", (req, res) => {
         });
       });
     });
+  });
+});
+
+app.get("/api/users/auth", auth, (req, res) => {
+  // 여기까지 미들웨어를 통과해 왔다는 얘기는 authentication is true
+  res.status(200).json({
+    _id: req.user._id,
+    isAdmin: req.user.role === 0 ? false : true,
+    email: req.user.email,
+    name: req.user.name,
+    isAuth: true,
+    lastname: req.user.lastname,
+    role: req.user.role,
+    image: req.user.image,
   });
 });
 
