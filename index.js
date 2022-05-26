@@ -21,7 +21,7 @@ mongoose
 app.get("/", (req, res) => {
   res.send("Hello World!!");
 });
-app.post("/api/user/register", (req, res) => {
+app.post("/api/users/register", (req, res) => {
   // register 시, 필요한 정보를 client 받으면 db에 저장
   const user = new User(req.body);
   user.save((err, userInfo) => {
@@ -32,7 +32,7 @@ app.post("/api/user/register", (req, res) => {
     });
   });
 });
-app.post("/api/user/login", (req, res) => {
+app.post("/api/users/login", (req, res) => {
   // 요청된 이메일을 db에서 있는지 체크
   // 이메일이 있으면, 비밀번호 동일 체크
   //비밀번호 동일시 token 생성
@@ -79,6 +79,22 @@ app.get("/api/users/auth", auth, (req, res) => {
     role: req.user.role,
     image: req.user.image,
   });
+});
+
+app.get("/api/users/logout", auth, (req, res) => {
+  console.log("hi");
+  User.findOneAndUpdate(
+    { _id: req.user._id },
+    {
+      token: "",
+    },
+    (err, user) => {
+      if (err) return res.json({ success: false, err });
+      return res.status(200).send({
+        success: true,
+      });
+    }
+  );
 });
 
 app.listen(port, () => {

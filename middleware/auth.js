@@ -1,6 +1,6 @@
 const { User } = require("../models/User.js");
 
-let auth = (rep, res, next) => {
+let auth = (req, res, next) => {
   // auth 처리
   //client cookie에서 토큰 가져오기
   //토큰을 복호화하여 유저 찾기
