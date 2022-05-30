@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
+import axios from "axios";
 
 function LandingPage() {
+  useEffect(() => {
+    axios.get("/").then((res) => console.log(res));
+  }, []);
   return <div>LandingPage</div>;
 }
 
