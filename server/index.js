@@ -7,6 +7,14 @@ const mongoose = require("mongoose");
 const config = require("./config/key");
 const cookieParser = require("cookie-parser");
 const { auth } = require("./middleware/auth");
+const cors = require("cors");
+let cors_origin = [`http://localhost:3000`];
+app.use(
+  cors({
+    origin: cors_origin, // 허락하고자 하는 요청 주소
+    credentials: true, // true로 하면 설정한 내용을 response 헤더에 추가 해줍니다.
+  })
+);
 //application.x-www0form-! 분석가능하게 해 줌
 app.use(bodyParser.urlencoded({ extended: true }));
 //json 파일 분석 하게 해줌
